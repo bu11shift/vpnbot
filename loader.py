@@ -35,4 +35,4 @@ bot = Bot(token=config.tg_bot.token,
 
 dp = Dispatcher(storage=MemoryStorage())
 # base_url = f'https://{config.webhook.domain}/' if config.webhook.use_webhook else
-marzban_client = MarzClientCache('http://localhost:8002', config, logger)
+marzban_client = MarzClientCache('http://marzban:8002', config, logger)
