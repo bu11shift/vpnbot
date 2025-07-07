@@ -4,7 +4,7 @@ services:
     env_file: .env.marzban
     command: bash -c "alembic upgrade head && python /code/marzban.py"
     environment:
-      UVICORN_HOST: "marzban"
+      UVICORN_HOST: "0.0.0.0"
       UVICORN_PORT: "8002"
       YOUR_DOMAIN: ${DOMAIN}
     ports:
