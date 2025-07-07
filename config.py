@@ -50,23 +50,10 @@ class Marzban:
 
 
 @dataclass
-class MarzbanServer:
-    host: str
-    port: int
-
-    @staticmethod
-    def from_env(env: Env):
-        host = env.str("UVICORN_HOST", "localhost")
-        port = env.int("UVICORN_PORT", 8002)
-        return MarzbanServer(host=host, port=port)
-
-
-@dataclass
 class Config:
     tg_bot: TgBot
     webhook: Webhook
     marzban: Marzban
-    marzban_server: MarzbanServer
 
 
 def load_config():
@@ -78,6 +65,5 @@ def load_config():
     return Config(
         tg_bot=TgBot.from_env(env),
         webhook=Webhook.from_env(env),
-        marzban=Marzban.from_env(env, env_marz),
-        marzban_server=MarzbanServer.from_env(env)
+        marzban=Marzban.from_env(env, env_marz)
     )
