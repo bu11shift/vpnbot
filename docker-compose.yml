@@ -19,12 +19,6 @@ services:
       - /etc/timezone:/etc/timezone:ro
     networks:
       - dokploy-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8002/docs"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
   vpn_bot:
     image: free_vpn_bot
     stop_signal: SIGINT
