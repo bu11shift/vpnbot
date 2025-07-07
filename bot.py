@@ -22,6 +22,8 @@ async def on_startup(bot: Bot):
     await register_commands(bot)
     if config.webhook.use_webhook:
         await bot.set_webhook(f"https://{config.webhook.domain}{config.webhook.url}webhook")
+    # Wait for marzban to be ready
+    await asyncio.sleep(5)
     await generate_config()
 
 

@@ -17,6 +17,14 @@ services:
       - ./volumes/marzban:/var/lib/marzban
       - ./volumes/marzban/xray_config.json:/code/xray_config.json:rw
       - /etc/timezone:/etc/timezone:ro
+    networks:
+      - dokploy-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
   vpn_bot:
     image: free_vpn_bot
     stop_signal: SIGINT
@@ -29,7 +37,14 @@ services:
     env_file:
       - ".env"
     depends_on:
-      - marzban
+      marzban:
+        condition: service_healthy
+    networks:
+      - dokploy-network
+
+networks:
+  dokploy-network:
+    external: true
 
 volumes:
   marz-storage:
