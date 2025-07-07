@@ -1,8 +1,6 @@
 services:
   marzban:
     image: gozargah/marzban:v0.7.0
-    container_name: free_vpn_bot_marzban
-    restart: always
     env_file: .env.marzban
     command: bash -c "alembic upgrade head && python /code/marzban.py"
     environment:
@@ -10,25 +8,17 @@ services:
       UVICORN_PORT: "8002"
       YOUR_DOMAIN: ${DOMAIN}
     ports:
-      - "0.0.0.0:8002:8002"
-      - "0.0.0.0:8443:8433"
-      - "0.0.0.0:2053:2053"
-    networks:
-      - free_vpn_bot
+      - "8002:8002"
+      - "8443:8433"
+      - "2053:2053"
     volumes:
       - marz-storage:/code
       - ./marzban.py:/code/marzban.py
       - ./volumes/marzban:/var/lib/marzban
       - ./volumes/marzban/xray_config.json:/code/xray_config.json:rw
       - /etc/timezone:/etc/timezone:ro
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "900k"
-        max-file: "10"
   vpn_bot:
     image: free_vpn_bot
-    container_name: free_vpn_bot
     stop_signal: SIGINT
     build:
       context: .
@@ -36,16 +26,10 @@ services:
     volumes:
       - .:/usr/src/app
     command: python3 -m bot
-    restart: always
     env_file:
       - ".env"
-    networks:
-      - free_vpn_bot
     depends_on:
       - marzban
-networks:
-  free_vpn_bot:
-    driver: bridge
 
 volumes:
   marz-storage:
