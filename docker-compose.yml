@@ -4,13 +4,13 @@ services:
     env_file: .env.marzban
     command: bash -c "alembic upgrade head && python /code/marzban.py"
     environment:
-      UVICORN_HOST: "0.0.0.0"
-      UVICORN_PORT: "8002"
+      UVICORN_HOST: 0.0.0.0
+      UVICORN_PORT: '8002'
       YOUR_DOMAIN: ${DOMAIN}
     ports:
-      - "8002:8002"
-      - "8443:8433"
-      - "2053:2053"
+      - '8002:8002'
+      - '8443:8433'
+      - '2053:2053'
     volumes:
       - marz-storage:/code
       - ./marzban.py:/code/marzban.py
@@ -19,19 +19,46 @@ services:
       - /etc/timezone:/etc/timezone:ro
     networks:
       - dokploy-network
+    labels:
+      - traefik.docker.network=dokploy-network
+      - traefik.http.routers.televpn-marzabot-du9jlp-4-web.rule=Host(`televpn-marzabot-du9jlp-585ea8-46-8-224-157.traefik.me`)
+      - traefik.http.routers.televpn-marzabot-du9jlp-4-web.entrypoints=web
+      - traefik.http.services.televpn-marzabot-du9jlp-4-web.loadbalancer.server.port=8002
+      - traefik.http.routers.televpn-marzabot-du9jlp-4-web.service=televpn-marzabot-du9jlp-4-web
+      - traefik.enable=true
+
   vpn_bot:
     image: free_vpn_bot
     stop_signal: SIGINT
     build:
       context: .
-    working_dir: "/usr/src/app"
+    working_dir: /usr/src/app
     volumes:
       - .:/usr/src/app
     command: python3 -m bot
     env_file:
-      - ".env"
+      - .env
     depends_on:
       - marzban
+    networks:
+      - dokploy-network
+
+  mtproto:
+    image: telegrammessenger/proxy:latest
+    container_name: mtproto-proxy
+    restart: unless-stopped
+    # MTProto не HTTP, Traefik не нужен — просто пробрасываем порт
+    ports:
+      - '8444:443'   # внешний:внутренний (внутри контейнера всегда 443)
+    volumes:
+      - mtproto-data:/data
+    environment:
+      # можно не задавать — образ сам сгенерит и сохранит в volume
+      # но лучше задать явно (32 hex символа = 16 bytes)
+      - SECRET=${MTPROXY_SECRET:-}
+      # опционально: TAG от @MTProxybot (тоже 32 hex)
+      - TAG=${MTPROXY_TAG:-}
+      - WORKERS=${MTPROXY_WORKERS:-2}
     networks:
       - dokploy-network
 
@@ -41,4 +68,6 @@ networks:
 
 volumes:
   marz-storage:
+    driver: local
+  mtproto-data:
     driver: local
