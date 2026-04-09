@@ -1,6 +1,6 @@
 services:
   marzban:
-    image: gozargah/marzban:v0.7.0
+    image: gozargah/marzban:v0.8.4
     env_file: .env.marzban
     command: bash -c "alembic upgrade head && python /code/marzban.py"
     environment:
