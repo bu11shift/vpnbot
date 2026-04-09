@@ -26,7 +26,7 @@ class MarzClientCache:
             self._client = AuthenticatedClient(
                 base_url=self._base_url,
                 token=self._token,
-                verify_ssl=True
+                verify_ssl=self._config.marzban.verify_ssl
             )
             self._logger.info(f'Set new client object')
         self._logger.info(f'We have client object')
@@ -46,5 +46,5 @@ class MarzClientCache:
                 access_token = token.access_token
                 return access_token
         except Exception as e:
-            self._logger.error(f"Error getting token: {e}")
+            self._logger.error(f"Error getting token from {self._base_url}: {e!r}")
             raise

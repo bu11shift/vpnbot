@@ -33,6 +33,7 @@ class Webhook:
 
 @dataclass
 class Marzban:
+    url: str
     username: str
     password: str
     token_expire: int
@@ -40,11 +41,12 @@ class Marzban:
 
     @staticmethod
     def from_env(env: Env, env_marz: Env):
+        url = env.str("MARZBAN_URL", "http://marzban:8002")
         username = env_marz.str("SUDO_USERNAME")
         password = env_marz.str("SUDO_PASSWORD")
         token_expire = env_marz.int("JWT_ACCESS_TOKEN_EXPIRE_MINUTES", 1440)
         verify_ssl = env.bool("MARZ_HAS_CERTIFICATE")
-        return Marzban(username=username, password=password,
+        return Marzban(url=url, username=username, password=password,
                        token_expire=token_expire,
                        verify_ssl=verify_ssl)
 
