@@ -12,7 +12,6 @@ services:
       - '8443:8433'
       - '2053:2053'
     volumes:
-      - marz-storage:/code
       - ./marzban.py:/code/marzban.py
       - ./volumes/marzban:/var/lib/marzban
       - ./volumes/marzban/xray_config.json:/code/xray_config.json:rw
@@ -67,7 +66,5 @@ networks:
     external: true
 
 volumes:
-  marz-storage:
-    driver: local
   mtproto-data:
     driver: local
