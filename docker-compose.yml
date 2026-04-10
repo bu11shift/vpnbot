@@ -9,7 +9,7 @@ services:
       YOUR_DOMAIN: ${DOMAIN}
     ports:
       - '8002:8002'
-      - '8443:8433'
+      - '8443:8443'
       - '2053:2053'
     volumes:
       - marz-storage:/code
