@@ -19,6 +19,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
     networks:
       - dokploy-network
+      - outbound
     labels:
       - traefik.docker.network=dokploy-network
       - traefik.http.routers.televpn-marzabot-du9jlp-4-web.rule=Host(`televpn-marzabot-du9jlp-585ea8-46-8-224-157.traefik.me`)
@@ -65,6 +66,8 @@ services:
 networks:
   dokploy-network:
     external: true
+  outbound:
+    driver: bridge
 
 volumes:
   marz-storage:
