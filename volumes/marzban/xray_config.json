@@ -59,7 +59,8 @@
                     "dest": "www.google.com:443",
                     "xver": 0,
                     "serverNames": [
-                        "www.google.com"
+                        "www.google.com",
+                        "ign.com"
                     ],
                     "privateKey": "qEOL51lFs2qMt9S5CcJ_9GnnrSacrX9YI1HbpMatvnA",
                     "shortIds": [
