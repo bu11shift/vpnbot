@@ -36,11 +36,7 @@
                 }
             },
             "sniffing": {
-                "enabled": true,
-                "destOverride": [
-                    "http",
-                    "tls"
-                ]
+                "enabled": false
             }
         },
         {
@@ -60,10 +56,10 @@
                 "security": "reality",
                 "realitySettings": {
                     "show": false,
-                    "dest": "ign.com:443",
+                    "dest": "www.google.com:443",
                     "xver": 0,
                     "serverNames": [
-                        "ign.com"
+                        "www.google.com"
                     ],
                     "privateKey": "qEOL51lFs2qMt9S5CcJ_9GnnrSacrX9YI1HbpMatvnA",
                     "shortIds": [
@@ -72,11 +68,7 @@
                 }
             },
             "sniffing": {
-                "enabled": true,
-                "destOverride": [
-                    "http",
-                    "tls"
-                ]
+                "enabled": false
             }
         }
     ],
