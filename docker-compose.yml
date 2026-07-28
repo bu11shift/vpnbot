@@ -1,22 +1,25 @@
 services:
   marzban:
-    image: gozargah/marzban:v0.7.0
+    image: gozargah/marzban:v0.8.4
     env_file: .env.marzban
     command: bash -c "alembic upgrade head && python /code/marzban.py"
     environment:
       UVICORN_HOST: 0.0.0.0
       UVICORN_PORT: '8002'
       YOUR_DOMAIN: ${DOMAIN}
+      XRAY_JSON: /var/lib/marzban/xray_config.json
+      SQLALCHEMY_DATABASE_URL: sqlite:////var/lib/marzban/db.sqlite3
     ports:
       - '8002:8002'
       - '8443:8443'
       - '2053:2053'
+      # Gate: if Traefik owns 0.0.0.0:443, set VPN_BIND_IP to a free public IP
+      - '${VPN_BIND_IP:-0.0.0.0}:443:443'
     volumes:
-      - marz-storage:/code
       - ./marzban.py:/code/marzban.py
       - ./volumes/marzban:/var/lib/marzban
       - ./volumes/marzban/xray_config.json:/code/xray_config.json:rw
-      - /etc/timezone:/etc/timezone:ro
+      - ${TIMEZONE_FILE:-/etc/timezone}:/etc/timezone:ro
     networks:
       - dokploy-network
       - outbound
@@ -70,7 +73,5 @@ networks:
     driver: bridge
 
 volumes:
-  marz-storage:
-    driver: local
   mtproto-data:
     driver: local

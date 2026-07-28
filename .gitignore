@@ -4,4 +4,7 @@ __pycache__/
 .idea
 /venv
 /.env
-/volumes/marzban/xray_config.json
+/volumes/marzban/db.sqlite3
+/backups/
+.DS_Store
+/volumes/timezone-stub/
