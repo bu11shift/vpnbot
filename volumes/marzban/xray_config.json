@@ -71,44 +71,6 @@
             "sniffing": {
                 "enabled": false
             }
-        },
-        {
-            "tag": "VLESS XHTTP REALITY",
-            "listen": "0.0.0.0",
-            "port": 443,
-            "protocol": "vless",
-            "settings": {
-                "clients": [],
-                "decryption": "none"
-            },
-            "streamSettings": {
-                "network": "xhttp",
-                "xhttpSettings": {
-                    "mode": "auto",
-                    "path": "/"
-                },
-                "security": "reality",
-                "realitySettings": {
-                    "show": false,
-                    "dest": "www.cloudflare.com:443",
-                    "xver": 0,
-                    "serverNames": [
-                        "www.cloudflare.com"
-                    ],
-                    "privateKey": "qEOL51lFs2qMt9S5CcJ_9GnnrSacrX9YI1HbpMatvnA",
-                    "shortIds": [
-                        "60e3411587686111"
-                    ]
-                }
-            },
-            "sniffing": {
-                "enabled": true,
-                "destOverride": [
-                    "http",
-                    "tls",
-                    "quic"
-                ]
-            }
         }
     ],
     "outbounds": [

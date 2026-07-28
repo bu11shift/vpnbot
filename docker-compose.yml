@@ -1,25 +1,22 @@
 services:
   marzban:
-    image: gozargah/marzban:v0.8.4
+    image: gozargah/marzban:v0.7.0
     env_file: .env.marzban
-    command: bash -c "export SQLALCHEMY_DATABASE_URL=\"$${SQLALCHEMY_DATABASE_URL:-sqlite:////var/lib/marzban/db.sqlite3}\" && alembic upgrade head && python /code/marzban.py"
+    command: bash -c "alembic upgrade head && python /code/marzban.py"
     environment:
       UVICORN_HOST: 0.0.0.0
       UVICORN_PORT: '8002'
       YOUR_DOMAIN: ${DOMAIN}
-      XRAY_JSON: /var/lib/marzban/xray_config.json
-      SQLALCHEMY_DATABASE_URL: sqlite:////var/lib/marzban/db.sqlite3
     ports:
       - '8002:8002'
       - '8443:8443'
       - '2053:2053'
-      # Traefik owns 0.0.0.0:443 and [::]:443 — publish XHTTP on a free host port.
-      - '8445:443'
     volumes:
+      - marz-storage:/code
       - ./marzban.py:/code/marzban.py
       - ./volumes/marzban:/var/lib/marzban
       - ./volumes/marzban/xray_config.json:/code/xray_config.json:rw
-      - ${TIMEZONE_FILE:-/etc/timezone}:/etc/timezone:ro
+      - /etc/timezone:/etc/timezone:ro
     networks:
       - dokploy-network
       - outbound
@@ -73,5 +70,7 @@ networks:
     driver: bridge
 
 volumes:
+  marz-storage:
+    driver: local
   mtproto-data:
     driver: local
