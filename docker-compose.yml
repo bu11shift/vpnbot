@@ -13,8 +13,9 @@ services:
       - '8002:8002'
       - '8443:8443'
       - '2053:2053'
-      # Gate: if Traefik owns 0.0.0.0:443, set VPN_BIND_IP to a free public IP
-      - '${VPN_BIND_IP:-0.0.0.0}:443:443'
+      # Traefik usually owns 0.0.0.0:443. Default binds localhost so deploy can start.
+      # For public XHTTP set VPN_BIND_IP to a free public IP (not used by Traefik).
+      - '${VPN_BIND_IP:-127.0.0.1}:443:443'
     volumes:
       - ./marzban.py:/code/marzban.py
       - ./volumes/marzban:/var/lib/marzban
