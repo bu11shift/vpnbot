@@ -2,7 +2,7 @@ services:
   marzban:
     image: gozargah/marzban:v0.8.4
     env_file: .env.marzban
-    command: bash -c "alembic upgrade head && python /code/marzban.py"
+    command: bash -c "export SQLALCHEMY_DATABASE_URL=\"$${SQLALCHEMY_DATABASE_URL:-sqlite:////var/lib/marzban/db.sqlite3}\" && alembic upgrade head && python /code/marzban.py"
     environment:
       UVICORN_HOST: 0.0.0.0
       UVICORN_PORT: '8002'
