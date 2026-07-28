@@ -13,10 +13,8 @@ services:
       - '8002:8002'
       - '8443:8443'
       - '2053:2053'
-      # Do NOT publish host :443 here — Dokploy Traefik already owns 0.0.0.0:443.
-      # After deploy, add a free public IP mapping in Dokploy (or compose override):
-      #   "YOUR_FREE_PUBLIC_IP:443:443"
-      # Xray still listens on container :443 for XHTTP REALITY.
+      # Traefik owns 0.0.0.0:443 and [::]:443 — publish XHTTP on a free host port.
+      - '8445:443'
     volumes:
       - ./marzban.py:/code/marzban.py
       - ./volumes/marzban:/var/lib/marzban
